@@ -26,6 +26,11 @@ export class EnvironmentManager {
     
     async save() {
         const form = document.getElementById('environmentForm');
+        const saveButton = document.querySelector('#environmentModal .btn-primary');
+        
+        // Mostrar loading en el botón
+        this.app.loadingManager.showButtonLoading(saveButton, 'Guardando...');
+        
         const formData = {
             name: document.getElementById('environment-name').value,
             description: document.getElementById('environment-description').value,
@@ -57,6 +62,9 @@ export class EnvironmentManager {
         } catch (error) {
             console.error('Error:', error);
             this.app.alertManager.show('Error al guardar environment', 'danger');
+        } finally {
+            // Ocultar loading del botón
+            this.app.loadingManager.hideButtonLoading(saveButton);
         }
     }
     
@@ -70,6 +78,9 @@ export class EnvironmentManager {
     async delete(id) {
         if (confirm('¿Estás seguro de que quieres eliminar este environment?')) {
             try {
+                // Mostrar loading global
+                this.app.loadingManager.showGlobalLoading('Eliminando environment...');
+                
                 const response = await fetch(`api.php/environments?id=${id}`, {
                     method: 'DELETE'
                 });
@@ -83,6 +94,9 @@ export class EnvironmentManager {
             } catch (error) {
                 console.error('Error:', error);
                 this.app.alertManager.show('Error al eliminar environment', 'danger');
+            } finally {
+                // Ocultar loading global
+                this.app.loadingManager.hideGlobalLoading();
             }
         }
     }

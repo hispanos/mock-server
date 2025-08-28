@@ -19,7 +19,8 @@ export class UIManager {
         document.querySelectorAll('.section-content').forEach(el => el.style.display = 'none');
         
         // Mostrar la sección seleccionada
-        document.getElementById(section + '-section').style.display = 'block';
+        const sectionElement = document.getElementById(section + '-section');
+        sectionElement.style.display = 'block';
         
         // Actualizar navegación activa
         document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
@@ -29,13 +30,20 @@ export class UIManager {
         this.app.currentSection = section;
         this.updateSectionHeader();
         
+        // Mostrar loading global al cambiar de sección
+        this.app.loadingManager.showGlobalLoading(`Cargando ${section === 'environments' ? 'environments' : 'rutas'}...`);
+        
         // Cargar datos según la sección
         switch(section) {
             case 'environments':
-                this.app.loadEnvironments();
+                this.app.loadEnvironments().finally(() => {
+                    this.app.loadingManager.hideGlobalLoading();
+                });
                 break;
             case 'routes':
-                this.app.routeManager.loadRoutesWithNestedData();
+                this.app.routeManager.loadRoutesWithNestedData().finally(() => {
+                    this.app.loadingManager.hideGlobalLoading();
+                });
                 break;
         }
     }
@@ -54,9 +62,24 @@ export class UIManager {
         const container = document.getElementById('environments-list');
         container.innerHTML = '';
         
-        this.app.environments.forEach(env => {
+        if (this.app.environments.length === 0) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="text-muted">
+                        <i class="fas fa-inbox fa-3x mb-3"></i>
+                        <h5>No hay environments configurados</h5>
+                        <p>Haz clic en "Agregar" para crear tu primer environment</p>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+        
+        this.app.environments.forEach((env, index) => {
             const card = document.createElement('div');
             card.className = 'col-md-4 mb-3';
+            
+            // Crear el contenido de la card directamente
             card.innerHTML = `
                 <div class="card h-100">
                     <div class="card-body">
@@ -79,15 +102,21 @@ export class UIManager {
                     </div>
                 </div>
             `;
+            
+            // Agregar la card al contenedor
             container.appendChild(card);
         });
     }
     
     renderRoutesWithNestedData() {
         const container = document.getElementById('routes-container');
-        container.innerHTML = '';
         
-        this.app.routes.forEach(route => {
+        // Mostrar loading en el contenedor
+        this.app.loadingManager.showContainerLoading('routes-container', 'Cargando rutas y respuestas...');
+        
+            container.innerHTML = '';
+            
+            this.app.routes.forEach((route, index) => {
             const env = this.app.getEnvironmentById(route.environment_id);
             const routeCard = document.createElement('div');
             routeCard.className = 'route-card';
