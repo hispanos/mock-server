@@ -50,6 +50,14 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2" id="section-title">Environments</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2" role="group">
+                            <button type="button" class="btn btn-outline-success" id="import-btn" data-bs-toggle="modal" data-bs-target="#importModal">
+                                <i class="fas fa-download me-2"></i>Importar
+                            </button>
+                            <button type="button" class="btn btn-outline-info" id="export-btn">
+                                <i class="fas fa-upload me-2"></i>Exportar
+                            </button>
+                        </div>
                         <button type="button" class="btn btn-primary" id="add-btn">
                             <i class="fas fa-plus me-2"></i>Agregar
                         </button>
@@ -343,7 +351,104 @@
         </div>
     </div>
 
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-                <script type="module" src="js/app.js"></script>
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Importar Environment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Desde archivo JSON personalizado</h6>
+                            <p class="text-muted small">Importa un environment exportado previamente desde este sistema</p>
+                            <form id="importJsonForm" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="jsonFile" class="form-label">Archivo JSON</label>
+                                    <input type="file" class="form-control" id="jsonFile" accept=".json" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-upload me-2"></i>Importar JSON
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Desde archivo OpenAPI 3.0</h6>
+                            <p class="text-muted small">Importa una especificación OpenAPI 3.0 para crear un nuevo environment</p>
+                            <form id="importOpenAPIForm" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="openapiFile" class="form-label">Archivo OpenAPI</label>
+                                    <input type="file" class="form-control" id="openapiFile" accept=".json,.yaml,.yml" required>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="fas fa-upload me-2"></i>Importar OpenAPI
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>Información sobre la importación</h6>
+                        <ul class="mb-0 small">
+                            <li><strong>JSON personalizado:</strong> Incluye environment, rutas, respuestas y reglas</li>
+                            <li><strong>OpenAPI 3.0:</strong> Convierte la especificación en un environment completo</li>
+                            <li>Si el environment ya existe, se actualizará con los nuevos datos</li>
+                            <li>Las rutas existentes se reemplazarán por las importadas</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal fade" id="exportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Exportar Environment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="exportEnvironment" class="form-label">Seleccionar Environment</label>
+                        <select class="form-select" id="exportEnvironment" required>
+                            <option value="">Selecciona un environment...</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exportFormat" class="form-label">Formato de exportación</label>
+                        <select class="form-select" id="exportFormat">
+                            <option value="json">JSON personalizado (completo)</option>
+                            <option value="openapi">OpenAPI 3.0 (estándar)</option>
+                        </select>
+                    </div>
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>Formatos disponibles</h6>
+                        <ul class="mb-0 small">
+                            <li><strong>JSON personalizado:</strong> Incluye toda la configuración del environment</li>
+                            <li><strong>OpenAPI 3.0:</strong> Especificación estándar compatible con herramientas externas</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="exportConfirmBtn">
+                        <i class="fas fa-download me-2"></i>Exportar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>

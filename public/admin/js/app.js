@@ -57,6 +57,31 @@ class MockAPIService {
         document.getElementById('environment-filter').addEventListener('change', () => {
             this.routeManager.loadRoutesWithNestedData();
         });
+        
+        // Formularios de importación
+        document.getElementById('importJsonForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const fileInput = document.getElementById('jsonFile');
+            if (fileInput.files.length > 0) {
+                try {
+                    await this.environmentManager.importFromFile(fileInput.files[0], 'json');
+                } catch (error) {
+                    console.error('Error en importación JSON:', error);
+                }
+            }
+        });
+        
+        document.getElementById('importOpenAPIForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const fileInput = document.getElementById('openapiFile');
+            if (fileInput.files.length > 0) {
+                try {
+                    await this.environmentManager.importFromFile(fileInput.files[0], 'openapi');
+                } catch (error) {
+                    console.error('Error en importación OpenAPI:', error);
+                }
+            }
+        });
     }
     
     showAddModal() {

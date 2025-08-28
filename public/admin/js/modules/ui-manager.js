@@ -95,6 +95,9 @@ export class UIManager {
                             <button class="btn btn-outline-primary btn-sm" onclick="mockAPIService.environmentManager.edit(${env.id})">
                                 <i class="fas fa-edit"></i> Editar
                             </button>
+                            <button class="btn btn-outline-info btn-sm" onclick="mockAPIService.environmentManager.export(${env.id})">
+                                <i class="fas fa-download"></i> Exportar
+                            </button>
                             <button class="btn btn-outline-danger btn-sm" onclick="mockAPIService.environmentManager.delete(${env.id})">
                                 <i class="fas fa-trash"></i> Eliminar
                             </button>
