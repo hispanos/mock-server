@@ -72,10 +72,10 @@
                              </select>
                          </div>
                          <div class="col-md-6 text-end">
-                             <button class="btn btn-outline-secondary btn-sm me-2" onclick="expandAllSections()">
+                             <button class="btn btn-outline-secondary btn-sm me-2" onclick="mockAPIService.uiManager.expandAllSections()">
                                  <i class="fas fa-expand-alt me-1"></i>Expandir Todo
                              </button>
-                             <button class="btn btn-outline-secondary btn-sm" onclick="collapseAllSections()">
+                             <button class="btn btn-outline-secondary btn-sm" onclick="mockAPIService.uiManager.collapseAllSections()">
                                  <i class="fas fa-compress-alt me-1"></i>Colapsar Todo
                              </button>
                          </div>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveEnvironment()">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="mockAPIService.environmentManager.save()">Guardar</button>
                 </div>
             </div>
         </div>
@@ -187,7 +187,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveRoute()">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="mockAPIService.routeManager.save()">Guardar</button>
                 </div>
             </div>
         </div>
@@ -256,7 +256,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveResponse()">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="mockAPIService.responseManager.save()">Guardar</button>
                 </div>
             </div>
         </div>
@@ -324,7 +324,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveRule()">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="mockAPIService.ruleManager.save()">Guardar</button>
                 </div>
             </div>
         </div>
