@@ -1,221 +1,243 @@
 # Mock API Service
 
-Una aplicación completa para mockear servicios de API REST con PHP y MySQL. Permite crear environments, rutas, respuestas y reglas para simular APIs reales durante el desarrollo y testing.
+Una aplicación completa para crear y gestionar servicios de API REST mock con PHP y MySQL. Permite crear entornos, rutas, respuestas múltiples y reglas condicionales de manera intuitiva.
 
 ## 🚀 Características
 
-- **Environments**: Crear múltiples entornos (desarrollo, testing, staging)
-- **Rutas**: Configurar endpoints con todos los métodos HTTP (GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD)
-- **Respuestas múltiples**: Cada ruta puede tener múltiples respuestas con diferentes códigos de estado
-- **Sistema de reglas**: Respuestas condicionales basadas en headers, query parameters, body o reglas personalizadas
-- **Interfaz intuitiva**: Panel de administración web moderno y fácil de usar
-- **URLs dinámicas**: Soporte para parámetros dinámicos en las rutas (ej: `/api/users/{id}`)
-- **Delays configurables**: Simular latencia de red
-- **CORS habilitado**: Listo para desarrollo frontend
+- **Entornos**: Organiza tus mocks por diferentes entornos (desarrollo, staging, producción)
+- **Rutas**: Define endpoints con métodos HTTP específicos
+- **Respuestas Múltiples**: Asocia diferentes respuestas a cada ruta con códigos de estado HTTP
+- **Reglas Condicionales**: Configura respuestas basadas en headers, parámetros de query o body
+- **Interfaz Intuitiva**: Panel de administración web fácil de usar
+- **Base de Datos**: Almacenamiento persistente en MySQL
+- **CORS**: Soporte completo para Cross-Origin Resource Sharing
+- **URLs Dinámicas**: Soporte para parámetros en URLs (ej: `/api/users/{id}`)
+- **Delays Configurables**: Simula latencia de red configurable
 
-## 📋 Requisitos
+## 🏗️ Arquitectura
 
-- PHP 7.4 o superior
-- MySQL 5.7 o superior
-- Servidor web (Apache/Nginx)
-- Extensión PDO para PHP
-- Extensión JSON para PHP
+### Backend
+- **PHP**: Lógica de negocio y API REST
+- **MySQL**: Base de datos para almacenar configuración
+- **PDO**: Conexión segura a base de datos
+- **Apache**: Servidor web con rewrite rules
 
-## 🛠️ Instalación
+### Frontend
+- **HTML5**: Estructura semántica
+- **CSS3**: Estilos modernos y responsivos
+- **JavaScript ES6**: Módulos ES6 para mejor organización
+- **Bootstrap 5**: Framework CSS para UI consistente
 
-### 1. Clonar o descargar el proyecto
-
-```bash
-git clone <url-del-repositorio>
-cd mock-api-service
-```
-
-### 2. Configurar la base de datos
-
-1. Crear una base de datos MySQL
-2. Importar el esquema desde `database/schema.sql`
-3. Configurar las credenciales en `config/database.php`
-
-```php
-return [
-    'host' => 'localhost',
-    'database' => 'mock_api_service',
-    'username' => 'tu_usuario',
-    'password' => 'tu_password',
-    'charset' => 'utf8mb4',
-    'options' => [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-    ]
-];
-```
-
-### 3. Configurar el servidor web
-
-#### Apache
-Asegúrate de que el módulo `mod_rewrite` esté habilitado y que el archivo `.htaccess` esté funcionando.
-
-#### Nginx
-```nginx
-location / {
-    try_files $uri $uri/ /index.php?$query_string;
-}
-```
-
-### 4. Configurar permisos
-
-```bash
-chmod 755 public/
-chmod 644 config/database.php
-```
-
-## 🚀 Uso
-
-### Acceso a la aplicación
-
-- **Panel de administración**: `http://tu-dominio/admin/`
-- **API de mocking**: `http://tu-dominio/` (cualquier endpoint)
-
-### Crear tu primer mock
-
-1. **Crear un Environment**
-   - Ve a la sección "Environments"
-   - Haz clic en "Agregar"
-   - Completa el nombre, descripción y URL base
-
-2. **Crear una Ruta**
-   - Ve a la sección "Rutas"
-   - Haz clic en "Agregar"
-   - Selecciona el environment
-   - Define el método HTTP y la ruta
-   - Agrega una descripción
-
-3. **Crear una Respuesta**
-   - Ve a la sección "Respuestas"
-   - Haz clic en "Agregar"
-   - Selecciona la ruta
-   - Define el status code, headers y body
-   - Marca como respuesta por defecto si es necesario
-
-4. **Opcional: Crear Reglas**
-   - Ve a la sección "Reglas"
-   - Haz clic en "Agregar"
-   - Define cuándo debe usarse esta respuesta
-
-### Ejemplos de uso
-
-#### GET /api/users
-```json
-{
-  "users": [
-    {"id": 1, "name": "Juan Pérez", "email": "juan@example.com"},
-    {"id": 2, "name": "María García", "email": "maria@example.com"}
-  ]
-}
-```
-
-#### POST /api/users
-```json
-{
-  "message": "Usuario creado exitosamente",
-  "id": 3
-}
-```
-
-#### Con reglas condicionales
-- Si el header `X-Error` existe → Status 500
-- Si el query parameter `search` está vacío → Lista vacía
-- Si el ID no es numérico → Error 400
-
-## 🔧 Configuración avanzada
-
-### Headers personalizados
-```json
-{
-  "Content-Type": "application/json",
-  "X-Custom-Header": "valor",
-  "Cache-Control": "no-cache"
-}
-```
-
-### Delays configurables
-- Simula latencia de red
-- Útil para testing de timeouts
-- Configurable en milisegundos
-
-### Rutas dinámicas
-- `/api/users/{id}` → Coincide con `/api/users/123`
-- `/api/products/{category}/{id}` → Coincide con `/api/products/electronics/456`
-
-## 📁 Estructura del proyecto
+## 📁 Estructura del Proyecto
 
 ```
 mock/
-├── config/
-│   └── database.php          # Configuración de la base de datos
 ├── database/
-│   └── schema.sql            # Esquema de la base de datos
-├── src/
-│   ├── Database.php          # Clase de conexión a la base de datos
-│   └── MockService.php       # Lógica principal de mocking
+│   ├── schema.sql                 # Esquema de base de datos
+│   └── migration_add_priority_to_responses.sql
 ├── public/
-│   ├── index.php             # Punto de entrada principal
-│   ├── .htaccess             # Configuración de Apache
-│   └── admin/                # Panel de administración
-│       ├── index.html        # Interfaz principal
-│       ├── app.js            # Lógica del frontend
-│       └── api.php           # API de administración
-└── README.md                 # Este archivo
+│   ├── .htaccess                  # Rewrite rules para Apache
+│   ├── api.php                    # Punto de entrada de la API
+│   └── admin/                     # Panel de administración
+│       ├── index.html             # Interfaz principal
+│       ├── css/
+│       │   └── styles.css         # Estilos centralizados
+│       └── js/
+│           ├── app.js             # Punto de entrada JavaScript
+│           ├── config/
+│           │   └── config.js      # Configuración centralizada
+│           └── modules/           # Módulos ES6
+│               ├── environment-manager.js
+│               ├── route-manager.js
+│               ├── response-manager.js
+│               ├── rule-manager.js
+│               ├── ui-manager.js
+│               └── alert-manager.js
+├── src/
+│   ├── Database.php               # Clase singleton para conexión DB
+│   ├── MockService.php            # Lógica principal del servicio mock
+│   └── AdminAPI.php               # API para el panel de administración
+└── README.md                      # Este archivo
 ```
 
-## 🧪 Testing
+## 🛠️ Instalación
 
-### Probar endpoints
+### Requisitos
+- PHP 7.4 o superior
+- MySQL 5.7 o superior
+- Apache con mod_rewrite habilitado
+- Extensión PHP PDO MySQL
+
+### Pasos de Instalación
+
+1. **Clona el repositorio**
+   ```bash
+   git clone <url-del-repositorio>
+   cd mock
+   ```
+
+2. **Configura la base de datos**
+   ```bash
+   # Crea la base de datos
+   mysql -u root -p
+   CREATE DATABASE mock_api_service;
+   USE mock_api_service;
+   
+   # Importa el esquema
+   source database/schema.sql;
+   ```
+
+3. **Configura la conexión a la base de datos**
+   Edita `src/Database.php` con tus credenciales:
+   ```php
+   private $host = 'localhost';
+   private $dbname = 'mock_api_service';
+   private $username = 'tu_usuario';
+   private $password = 'tu_password';
+   ```
+
+4. **Configura el servidor web**
+   - Asegúrate de que el directorio `public/` sea el document root
+   - Verifica que mod_rewrite esté habilitado
+   - El archivo `.htaccess` ya está configurado para redirigir todas las peticiones a `api.php`
+
+## 🎯 Uso
+
+### 1. Acceder al Panel de Administración
+Navega a `http://tu-dominio/admin/` para acceder al panel de administración.
+
+### 2. Crear un Entorno
+- Haz clic en "Nuevo Environment"
+- Define un nombre y descripción
+- Guarda el entorno
+
+### 3. Crear Rutas
+- Selecciona "Rutas" en el menú
+- Haz clic en "Nueva Ruta"
+- Define:
+  - Método HTTP (GET, POST, PUT, DELETE, etc.)
+  - URL del endpoint
+  - Entorno al que pertenece
+  - Descripción
+
+### 4. Configurar Respuestas
+- Dentro de cada ruta, expande la sección "Respuestas"
+- Haz clic en "Nueva Respuesta"
+- Define:
+  - Nombre de la respuesta
+  - Código de estado HTTP
+  - Headers (en formato JSON)
+  - Body de la respuesta
+  - Delay en milisegundos
+  - Si es respuesta por defecto
+
+### 5. Configurar Reglas (Opcional)
+- Dentro de cada respuesta, expande la sección "Reglas"
+- Define condiciones basadas en:
+  - Headers de la petición
+  - Parámetros de query
+  - Body de la petición
+- Las reglas determinan qué respuesta se devuelve
+
+### 6. Probar el Mock
+Una vez configurado, puedes hacer peticiones a tu endpoint:
 ```bash
-# GET request
 curl http://tu-dominio/api/users
-
-# POST request
-curl -X POST http://tu-dominio/api/users \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Nuevo Usuario", "email": "nuevo@example.com"}'
-
-# Con headers personalizados
-curl -H "X-Error: true" http://tu-dominio/api/users
 ```
 
-### Testing con herramientas
-- **Postman**: Importa las URLs y prueba diferentes métodos
-- **Insomnia**: Similar a Postman, muy intuitivo
-- **cURL**: Desde línea de comandos
-- **JavaScript fetch**: Para testing frontend
+## 🔧 Configuración
+
+### Variables CSS
+El archivo `public/admin/css/styles.css` contiene variables CSS para personalización:
+```css
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+}
+```
+
+### Configuración JavaScript
+El archivo `public/admin/js/config/config.js` centraliza la configuración:
+- URLs de la API
+- Duración de animaciones
+- Configuración de alertas
+- Métodos HTTP soportados
+- Tipos de reglas disponibles
+
+## 📊 Base de Datos
+
+### Tablas Principales
+
+#### `environments`
+- Almacena entornos (desarrollo, staging, producción)
+
+#### `routes`
+- Define las rutas de la API con métodos HTTP
+
+#### `responses`
+- Respuestas asociadas a cada ruta
+- Incluye código de estado, headers, body y delay
+- Campo `priority` para ordenar respuestas
+
+#### `rules`
+- Reglas condicionales para seleccionar respuestas
+- Soporta condiciones en headers, query y body
+
+## 🚀 API Endpoints
+
+### Mock Service
+- `GET/POST/PUT/DELETE /api/*` - Endpoints mock configurados
+
+### Admin API
+- `POST /api.php` - Endpoint para operaciones CRUD del panel de administración
 
 ## 🔒 Seguridad
 
-- **CORS habilitado**: Para desarrollo frontend
-- **Validación de entrada**: Todos los datos se validan antes de procesarse
-- **Prepared statements**: Previene inyección SQL
-- **Headers de seguridad**: XSS protection, content type sniffing, etc.
+- **Validación de entrada**: Todos los datos de entrada son validados
+- **Prepared Statements**: Uso de PDO para prevenir SQL injection
+- **CORS configurable**: Headers CORS personalizables por entorno
 
-## 🚨 Troubleshooting
+## 🧪 Testing
 
-### Error de conexión a la base de datos
-- Verifica las credenciales en `config/database.php`
-- Asegúrate de que MySQL esté ejecutándose
-- Verifica que la base de datos exista
+Para probar que todo funciona correctamente:
 
-### Las rutas no funcionan
-- Verifica que `mod_rewrite` esté habilitado en Apache
-- Confirma que el archivo `.htaccess` esté presente
-- Verifica los permisos del directorio
+1. **Verifica la base de datos**
+   ```bash
+   mysql -u root -p mock_api_service -e "SHOW TABLES;"
+   ```
 
-### Errores 500
-- Revisa los logs de error de PHP
-- Verifica que todas las extensiones estén habilitadas
-- Confirma que los archivos tengan los permisos correctos
+2. **Prueba el panel de administración**
+   - Navega a `/admin/`
+   - Crea un entorno de prueba
+   - Crea una ruta simple
+   - Configura una respuesta
 
-## 🤝 Contribuir
+3. **Prueba el endpoint mock**
+   ```bash
+   curl http://tu-dominio/api/test
+   ```
+
+## 🐛 Troubleshooting
+
+### Error: "Unknown column 'priority'"
+Si encuentras este error, ejecuta la migración:
+```sql
+source database/migration_add_priority_to_responses.sql;
+```
+
+### Problemas de CORS
+Verifica que los headers CORS estén configurados correctamente en las respuestas.
+
+### Errores de base de datos
+- Verifica las credenciales en `src/Database.php`
+- Asegúrate de que la base de datos existe
+- Verifica que el usuario tenga permisos suficientes
+
+## 🤝 Contribución
 
 1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
@@ -230,23 +252,16 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 ## 🆘 Soporte
 
 Si tienes problemas o preguntas:
-
-1. Revisa la sección de troubleshooting
+1. Revisa la documentación
 2. Busca en los issues existentes
 3. Crea un nuevo issue con detalles del problema
-4. Incluye información sobre tu entorno (PHP, MySQL, servidor web)
 
-## 🎯 Roadmap
+## 🔄 Changelog
 
-- [ ] Importar/exportar configuraciones
-- [ ] Logs de requests
-- [ ] Métricas de uso
-- [ ] Autenticación para el panel de administración
-- [ ] API para gestión programática
-- [ ] Soporte para WebSockets
-- [ ] Plantillas de respuestas
-- [ ] Testing automático de endpoints
-
----
-
-**¡Disfruta mockeando tus APIs! 🚀**
+### v1.0.0
+- Implementación inicial del servicio mock
+- Panel de administración web
+- Soporte para entornos, rutas, respuestas y reglas
+- Arquitectura modular JavaScript ES6
+- Estructura de base de datos completa
+- Soporte para CORS y URLs dinámicas

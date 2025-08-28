@@ -1,0 +1,313 @@
+/* Mock API Service - Estilos principales */
+
+/* Variables CSS */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --border-color: #dee2e6;
+    --shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --transition: all 0.3s ease;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-color);
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    background-color: var(--dark-color);
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.75rem 1rem;
+    transition: var(--transition);
+}
+
+.sidebar .nav-link:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+    color: #fff;
+    background-color: var(--primary-color);
+}
+
+.main-content {
+    padding-top: 1.5rem;
+}
+
+/* Badges de métodos HTTP */
+.method-badge {
+    font-size: 0.75em;
+    padding: 0.25em 0.5em;
+    font-weight: bold;
+}
+
+.method-get { background-color: var(--success-color); }
+.method-post { background-color: var(--primary-color); }
+.method-put { background-color: var(--warning-color); }
+.method-delete { background-color: var(--danger-color); }
+.method-patch { background-color: var(--info-color); }
+.method-options { background-color: var(--info-color); }
+.method-head { background-color: var(--secondary-color); }
+
+/* Estilos para vista anidada */
+.route-card {
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.route-header {
+    background: linear-gradient(135deg, var(--light-color) 0%, #e9ecef 100%);
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.responses-container {
+    background-color: var(--light-color);
+    padding: 15px;
+}
+
+.response-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow);
+}
+
+.response-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.rules-container {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.rule-item {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.nested-actions .btn {
+    margin-right: 5px;
+    font-size: 0.8em;
+}
+
+/* Estilos para acordeón */
+.accordion-toggle {
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.accordion-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.accordion-toggle .fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+.accordion-toggle.collapsed .fa-chevron-down {
+    transform: rotate(-90deg);
+}
+
+.accordion-content {
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.accordion-content.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+}
+
+.accordion-content.expanded {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+/* Estilos para modales */
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* Estilos para formularios */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Estilos para botones */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Estilos para alertas */
+.alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: var(--shadow);
+}
+
+/* Estilos para tablas */
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.table thead th {
+    background-color: var(--dark-color);
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+/* Estilos para cards */
+.card {
+    border: none;
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para filtros */
+.form-select {
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+/* Estilos para badges */
+.badge {
+    font-size: 0.75em;
+    padding: 0.35em 0.65em;
+}
+
+/* Estilos para código */
+code {
+    background-color: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 0.875em;
+    color: var(--danger-color);
+}
+
+/* Estilos para iconos */
+.fas, .far, .fab {
+    margin-right: 0.5rem;
+}
+
+/* Estilos para navegación */
+.nav-link {
+    border-radius: 6px;
+    margin: 2px 0;
+}
+
+/* Estilos para botones de acción */
+.btn-group .btn {
+    border-radius: 6px;
+}
+
+/* Estilos para estados */
+.bg-success { background-color: var(--success-color) !important; }
+.bg-danger { background-color: var(--danger-color) !important; }
+.bg-warning { background-color: var(--warning-color) !important; }
+.bg-info { background-color: var(--info-color) !important; }
+.bg-secondary { background-color: var(--secondary-color) !important; }
+.bg-primary { background-color: var(--primary-color) !important; }
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        position: static;
+        height: auto;
+        padding-top: 0;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .route-card {
+        margin-bottom: 15px;
+    }
+    
+    .response-card {
+        padding: 10px;
+    }
+}
+
+/* Estilos para scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-color);
+}
