@@ -581,14 +581,35 @@ function importFromOpenAPI($openapiData, $db) {
                         $statusCode = 200; // Valor por defecto si es inválido
                     }
                     
-                    if (isset($response['content']['application/json']['example'])) {
-                        $responseBody = json_encode($response['content']['application/json']['example']);
-                    }
+                                         if (isset($response['content']['application/json']['example'])) {
+                         // Si ya es un string JSON, usarlo directamente
+                         if (is_string($response['content']['application/json']['example'])) {
+                             $responseBody = $response['content']['application/json']['example'];
+                         } else {
+                             // Si es un array/objeto, convertirlo a JSON
+                             $responseBody = json_encode($response['content']['application/json']['example']);
+                         }
+                         
+                         // Limpiar el JSON de caracteres de escape innecesarios
+                         $originalBody = $responseBody;
+                         $responseBody = cleanJsonString($responseBody);
+                         
+                         // Log para debugging
+                         error_log("Original body: " . $originalBody);
+                         error_log("Cleaned body: " . $responseBody);
+                     }
                     
                     if (isset($response['headers'])) {
                         $headers = [];
                         foreach ($response['headers'] as $headerName => $headerSpec) {
-                            $headers[$headerName] = $headerSpec['example'] ?? '';
+                            $headerValue = $headerSpec['example'] ?? '';
+                            
+                            // Limpiar el valor del header si es un string
+                            if (is_string($headerValue)) {
+                                $headerValue = cleanJsonString($headerValue);
+                            }
+                            
+                            $headers[$headerName] = $headerValue;
                         }
                         $responseHeaders = json_encode($headers);
                     }
@@ -745,4 +766,46 @@ function importFromCustomJSON($importData, $db) {
         $db->getConnection()->rollBack();
         throw $e;
     }
+}
+
+/**
+ * Limpia un string JSON de caracteres de escape innecesarios
+ */
+function cleanJsonString($jsonString) {
+    // Si ya es un string válido de JSON, limpiarlo
+    if (is_string($jsonString)) {
+        // Primero intentar decodificar directamente
+        $decoded = json_decode($jsonString, true);
+        if ($decoded !== null) {
+            return json_encode($decoded);
+        }
+        
+        // Si no se puede decodificar, limpiar caracteres de escape manualmente
+        $cleaned = $jsonString;
+        
+        // Remover caracteres de escape de línea (tanto literales como escapados)
+        $cleaned = str_replace(['\r\n', '\r', '\n', '\t', '\\r\\n', '\\r', '\\n', '\\t'], ['', '', '', '', '', '', '', ''], $cleaned);
+        
+        // Remover barras invertidas innecesarias
+        $cleaned = stripslashes($cleaned);
+        
+        // Remover comillas dobles al inicio y final si están duplicadas
+        $cleaned = trim($cleaned, '"');
+        
+        // Verificar que sea JSON válido después de limpiar
+        $decoded = json_decode($cleaned, true);
+        if ($decoded !== null) {
+            return json_encode($decoded);
+        }
+        
+        // Si aún no es válido, intentar con el string original sin escapes
+        $originalCleaned = stripslashes($jsonString);
+        $decoded = json_decode($originalCleaned, true);
+        if ($decoded !== null) {
+            return json_encode($decoded);
+        }
+    }
+    
+    // Si no se puede limpiar, devolver el original
+    return $jsonString;
 }
